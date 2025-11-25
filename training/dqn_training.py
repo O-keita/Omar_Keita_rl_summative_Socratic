@@ -1,0 +1,65 @@
+
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from stable_baselines3 import DQN
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
+from stable_baselines3.common.env_util import make_vec_env
+
+from environment.custom_env import SocraticTutorEnv
+
+def make_env():
+    env = SocraticTutorEnv(render_mode=None)   # no render during training
+    env = Monitor(env)
+    return env
+
+if __name__ == "__main__":
+
+    # Create vectorized environment
+    env = make_vec_env(make_env, n_envs=1)
+
+    # Where to save models
+    save_path = "../models/dqn_engagement"
+
+    checkpoint_callback = CheckpointCallback(save_freq=50_000, save_path=save_path)
+
+    eval_env = make_env()
+
+    eval_callback = EvalCallback(
+        eval_env,
+        best_model_save_path=save_path,
+        log_path="../logs/",
+        eval_freq=30_000,
+        deterministic=True,
+        render=False
+    )
+
+    # DQN hyperparameters
+    model = DQN(
+        "MlpPolicy",
+        env,
+        learning_rate=0.0005,
+        buffer_size=300_000,
+        learning_starts=10_000,
+        batch_size=32,
+        gamma=0.99,
+        target_update_interval=10_000,
+        train_freq=4,
+        exploration_fraction=0.1,
+        exploration_initial_eps=0.88,
+        exploration_final_eps=0.02,
+        verbose=1,
+        tensorboard_log="../tensorboard/"
+    )
+
+    # Train the agent
+    model.learn(
+        total_timesteps=500_000,
+        callback=[checkpoint_callback, eval_callback]
+    )
+
+    model.save(f"{save_path}/final_model")
+
+    print("Training complete!")

@@ -1,0 +1,10 @@
+gymnasium
+numpy
+pygame
+imageio
+stable-baselines3
+torch
+matplotlib
+pandas
+seaborn
+tqdm
