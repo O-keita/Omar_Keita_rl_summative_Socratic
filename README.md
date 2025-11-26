@@ -98,7 +98,7 @@ SocraticLearn/
 Watch the environment in action with random and trained agents:
 
 **Static Random Agent Demo:**  
-[Environment Visualization - Random Actions](https://github.com/O-keita/SocraticLearn.git)
+<video controls src="demos/simulation_30s.mp4" title="Title"></video>
 
 ### Visual Elements
 The environment features:
