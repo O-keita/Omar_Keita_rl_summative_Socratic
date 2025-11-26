@@ -129,7 +129,7 @@ def main():
     parser.add_argument("--eval-episodes", type=int, default=20)
     parser.add_argument("--seeds", type=int, default=3)
     parser.add_argument("--render", type=lambda x: x.lower() in ("1", "true", "yes"), default=False)
-    parser.add_argument("--out-csv", type=str, default="eval_results.csv")
+    parser.add_argument("--out-csv", type=str, default="results/dqn_results.csv")
     args = parser.parse_args()
 
     model_path = find_model(args.model_path)

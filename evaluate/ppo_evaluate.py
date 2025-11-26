@@ -97,7 +97,7 @@ def main():
     parser.add_argument("--eval-episodes", type=int, default=20)
     parser.add_argument("--seeds", type=int, default=3)
     parser.add_argument("--render", type=lambda x: x.lower() in ("1","true","yes"), default=False)
-    parser.add_argument("--out-csv", type=str, default="ppo_eval_results.csv")
+    parser.add_argument("--out-csv", type=str, default="results/ppo_eval_results.csv")
     args = parser.parse_args()
 
     model_path = find_model(args.model_path)
@@ -116,6 +116,19 @@ def main():
     print("=== PPO Evaluation Summary ===")
     print(f"Mean reward: {summary['reward_mean']:.2f}  std: {summary['reward_std']:.2f}")
     print(f"Mean length: {summary['length_mean']:.2f}  std: {summary['length_std']:.2f}")
+
+    # Save CSV
+    out_dir = os.path.dirname(args.out_csv)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
+    with open(args.out_csv, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=results[0].keys())
+        writer.writeheader()
+        writer.writerows(results)
+
+    print(f"✅ Saved results to {args.out_csv}")
+
 
 if __name__ == "__main__":
     main()

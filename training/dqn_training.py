@@ -40,15 +40,15 @@ if __name__ == "__main__":
     model = DQN(
         "MlpPolicy",
         env,
-        learning_rate=0.0005,
-        buffer_size=300_000,
+        learning_rate=0.001,
+        buffer_size=200_000,
         learning_starts=10_000,
         batch_size=32,
         gamma=0.99,
         target_update_interval=10_000,
         train_freq=4,
         exploration_fraction=0.1,
-        exploration_initial_eps=0.88,
+        exploration_initial_eps=0.2,
         exploration_final_eps=0.02,
         verbose=1,
         tensorboard_log="../tensorboard/"

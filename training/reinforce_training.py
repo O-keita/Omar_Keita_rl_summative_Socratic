@@ -104,14 +104,14 @@ if __name__ == "__main__":
     save_path = "../models/reinforce_engagement"
 
     policy = PolicyNetwork(env.observation_space.shape[0], env.action_space.n)
-    optimizer = torch.optim.Adam(policy.parameters(), lr=3e-4)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=1e-4)
 
     train_reinforce(
         env,
         policy,
         optimizer,
-        gamma=0.995,
-        total_episodes=5000,
+        gamma=0.99,
+        total_episodes=3000,
         save_path=save_path
     )
 
